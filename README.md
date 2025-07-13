@@ -157,6 +157,6 @@ Blood cell divided! Oxygen level: 50
 - TypeScript
 - readline-sync for interactive console
 
-## License
+## Built By
 
-Built by Ms Hamsini S
+Ms Hamsini S
