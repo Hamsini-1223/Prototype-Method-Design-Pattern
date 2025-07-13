@@ -1,0 +1,29 @@
+{
+  "name": "prototype-pattern-cell-division",
+  "version": "1.0.0",
+  "description": "Interactive demonstration of Prototype Design Pattern using cell division analogy",
+  "main": "main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node main.js",
+    "dev": "ts-node main.ts"
+  },
+  "keywords": [
+    "design-pattern",
+    "prototype",
+    "typescript",
+    "biology",
+    "interactive"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/readline-sync": "^1.4.4",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
+  }
+}
