@@ -214,6 +214,174 @@ Just like biological cells:
 
 This demonstrates the Prototype Pattern: objects copying themselves without external code knowing their internals.
 
+## Sample Output
+
+Here's what you'll see when running the program:
+
+### Initial Menu
+
+```
+Welcome to Cell Division Lab!
+
+=== CELL LAB ===
+1. Create Cell
+2. Divide Cell
+3. Teach Brain Cell
+4. Show All Cells
+5. Exit
+
+Cells in lab: 0
+Choose (1-5): 1
+```
+
+### Creating Cells
+
+```
+Cell types:
+1. basic
+2. blood
+3. brain
+Choose type: 3
+
+Cell divided! Parent: abc123, Child: def456
+Created brain cell: def456
+```
+
+### Teaching Brain Cell
+
+```
+=== CELL LAB ===
+1. Create Cell
+2. Divide Cell
+3. Teach Brain Cell
+4. Show All Cells
+5. Exit
+
+Cells in lab: 1
+Choose (1-5): 3
+
+Brain cells:
+1. def456 - Memories: Memory 1, Memory 2
+Choose brain cell: 1
+What to teach? Prototype pattern is cool!
+Brain cell learned: Prototype pattern is cool!
+```
+
+### Cell Division in Action
+
+```
+Choose (1-5): 2
+
+Cells:
+1. Cell def456: DNA=HUMAN_DNA, Energy=100, Age=0
+Choose cell: 1
+
+Brain cell divided! Copied 3 memories
+Division successful!
+```
+
+### Viewing All Cells
+
+```
+Choose (1-5): 4
+
+All cells:
+1. [Brain] Cell def456: DNA=HUMAN_DNA, Energy=60, Age=1
+2. [Brain] Cell ghi789: DNA=HUMAN_DNA, Energy=80, Age=0
+```
+
+### Complete Session Example
+
+```
+Welcome to Cell Division Lab!
+
+=== CELL LAB ===
+1. Create Cell
+2. Divide Cell
+3. Teach Brain Cell
+4. Show All Cells
+5. Exit
+
+Cells in lab: 0
+Choose (1-5): 1
+
+Cell types:
+1. basic
+2. blood
+3. brain
+Choose type: 3
+
+Cell divided! Parent: template, Child: abc123
+Created brain cell: abc123
+
+Press Enter...
+
+=== CELL LAB ===
+1. Create Cell
+2. Divide Cell
+3. Teach Brain Cell
+4. Show All Cells
+5. Exit
+
+Cells in lab: 1
+Choose (1-5): 3
+
+Brain cells:
+1. abc123 - Memories: Memory 1, Memory 2
+Choose brain cell: 1
+What to teach? I can clone myself!
+Brain cell learned: I can clone myself!
+
+Press Enter...
+
+=== CELL LAB ===
+1. Create Cell
+2. Divide Cell
+3. Teach Brain Cell
+4. Show All Cells
+5. Exit
+
+Cells in lab: 1
+Choose (1-5): 2
+
+Cells:
+1. Cell abc123: DNA=HUMAN_DNA, Energy=100, Age=0
+Choose cell: 1
+
+Brain cell divided! Copied 3 memories
+Division successful!
+
+Press Enter...
+
+=== CELL LAB ===
+1. Create Cell
+2. Divide Cell
+3. Teach Brain Cell
+4. Show All Cells
+5. Exit
+
+Cells in lab: 2
+Choose (1-5): 4
+
+All cells:
+1. [Brain] Cell abc123: DNA=HUMAN_DNA, Energy=60, Age=1
+2. [Brain] Cell def456: DNA=HUMAN_DNA, Energy=80, Age=0
+
+Press Enter...
+
+=== CELL LAB ===
+1. Create Cell
+2. Divide Cell
+3. Teach Brain Cell
+4. Show All Cells
+5. Exit
+
+Cells in lab: 2
+Choose (1-5): 5
+
+Thanks for using Cell Division Lab!
+```
+
 ## Built By
 
 Ms Hamsini S
