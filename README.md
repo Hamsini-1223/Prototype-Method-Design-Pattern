@@ -1,161 +1,218 @@
-# Cell Division Lab - Prototype Design Pattern Demo
+# Cell Division - Prototype Pattern
 
-A TypeScript application demonstrating the Prototype Design Pattern through a cell division simulation.
+A simple TypeScript demo of the Prototype Design Pattern using cell division.
 
-## Overview
+## What it does
 
-This project implements the Prototype Design Pattern using a biological cell division analogy. Cells can clone themselves while maintaining their unique properties, demonstrating how objects can create copies of themselves without depending on their concrete classes.
-
-## Features
-
-- Interactive console interface for cell manipulation
-- Three cell types: Basic, Blood, and Brain cells
-- Self-cloning mechanism using the prototype pattern
-- Prototype factory for managing cell templates
-- Specialized cell behaviors (oxygen transport, knowledge storage)
-
-## Installation
-
-```bash
-git clone https://github.com/Hamsini-1223/Prototype-Method-Design-Pattern
-cd Prototype
-npm install
-```
-
-## Usage
-
-Run the interactive demo:
-
-```bash
-npm run dev
-```
-
-Or build and run:
-
-```bash
-npm run build
-npm start
-```
+Shows how objects can copy themselves, just like cells dividing in biology. Each cell knows how to make an exact copy of itself without needing external help.
 
 ## Project Structure
 
 ```
-├── Cell.ts              # Base cell class with cloning ability
-├── SpecializedCells.ts  # BloodCell and BrainCell implementations
-├── CellFactory.ts       # Prototype registry and factory
-├── BiologyLab.ts        # Automated demo runner
-├── InteractiveLab.ts    # Interactive console interface
-├── main.ts              # Entry point
+├──asset/
+│   ├── Prototype.png
+├── src/
+│   ├── cell.ts           # Basic cell that divides itself
+│   ├── bloodCell.ts      # Blood cell with oxygen property
+│   ├── brainCell.ts      # Brain cell with memories property
+│   ├── cellFactory.ts    # Creates cells from templates
+│   ├── lab.ts           # Interactive menu for user
+│   └── main.ts          # Starts the program
 ├── package.json         # Dependencies and scripts
-└── tsconfig.json        # TypeScript configuration
+├── tsconfig.json       # TypeScript configuration
+└── README.md           # This file
 ```
 
 ## UML Class Diagram
 
-![Mitotic Cell Division Prototype UML Diagram](Prototype.png)
+![Mitotic Cell Division Prototype UML Diagram](asset/Prototype.png)
 
-## Core Classes
+## How to run
 
-### Cell
+```bash
+npm install
+npm run dev
+```
 
-Base class implementing the `Cloneable` interface with `divide()` method for self-replication.
+## Code Explanation
 
-### BloodCell
-
-Specialized cell that carries oxygen and maintains oxygen levels when dividing.
-
-### BrainCell
-
-Specialized cell that stores knowledge and copies all memories to offspring during division.
-
-### CellFactory
-
-Prototype registry that stores template cells and provides cloning functionality.
-
-## Design Pattern Implementation
-
-The prototype pattern is implemented through:
-
-1. **Cloneable Interface**: Defines the contract for object cloning
-2. **Self-Cloning Methods**: Each cell type implements its own division logic
-3. **Prototype Registry**: Factory pattern for managing and cloning prototypes
-4. **Polymorphic Behavior**: Different cell types maintain their specific properties when cloned
+### cell.ts - The Core Pattern
 
 ```typescript
-divide(): Cell {
-  if (this.energy < 50) {
-    throw new Error("Not enough energy to divide!");
+export class Cell {
+  // Cell properties
+  public dna: string;
+  public energy: number;
+  public age: number;
+
+  // This is the Prototype pattern - cell copies itself
+  divide(): Cell {
+    // Check if cell has enough energy
+    if (this.energy < 50) {
+      throw new Error("Not enough energy to divide!");
+    }
+
+    // Parent loses energy and ages
+    this.energy -= 30;
+    this.age += 1;
+
+    // Create identical copy with fresh energy
+    const newCell = new Cell(this.dna, 80, 0);
+    return newCell;
   }
-
-  this.energy -= 30;
-  this.age += 1;
-
-  const newCell = new Cell(this.dna, 80, 0);
-  return newCell;
 }
 ```
 
-## Sample Output
+**Key Point**: The cell has a `divide()` method that creates a copy of itself. This is the core of the Prototype pattern.
 
-When you run the interactive demo, you'll see a menu-driven interface like this:
+### bloodCell.ts - Specialized Copying
 
-```
-🧬 Welcome to the Interactive Cell Division Lab!
-=====================================
-Experience the Prototype Design Pattern in action!
+```typescript
+export class BloodCell extends Cell {
+  public oxygen: number;
 
-📋 CELL LAB MENU
-================
-1. 🔬 Create Cell from Prototype
-2. 🌱 Make Cell Divide
-3. 💪 Help Cell Grow
-4. 📊 View All Cells
-5. 🧠 Teach Brain Cell
-6. 🩸 Give Oxygen to Blood Cell
-7. 🏭 Manage Prototypes
-8. 🚪 Exit Lab
+  // Blood cell copies itself AND its oxygen level
+  divide(): BloodCell {
+    // Same energy check as parent
+    if (this.energy < 50) {
+      throw new Error("Blood cell too weak to divide!");
+    }
 
-Enter your choice (1-8): 1
-
-🔬 CREATE NEW CELL
-==================
-Available cell prototypes:
-1. basic
-2. blood
-3. brain
-
-Choose prototype (1-3): 2
-
-Cell abc123 divided! Created new cell def456
-✅ Successfully created blood cell!
-📋 Cell def456: DNA=HUMAN_DNA, Energy=80, Age=0
+    // Create new blood cell with same oxygen
+    const newBloodCell = new BloodCell(this.dna, this.oxygen);
+    return newBloodCell;
+  }
+}
 ```
 
-Example of cell division:
+**Key Point**: Blood cell overrides `divide()` to copy its special `oxygen` property too.
+
+### brainCell.ts - Complex State Copying
+
+```typescript
+export class BrainCell extends Cell {
+  public memories: string[];
+
+  // Brain cell copies itself AND all its memories
+  divide(): BrainCell {
+    // Create new brain cell with copied memories
+    const newBrainCell = new BrainCell(this.dna, this.memories);
+    return newBrainCell;
+  }
+
+  learn(memory: string): void {
+    this.memories.push(memory);
+  }
+}
+```
+
+**Key Point**: Brain cell copies complex state (array of memories) when dividing.
+
+### cellFactory.ts - Prototype Registry
+
+```typescript
+export class CellFactory {
+  private templates: Map<string, Cell>;
+
+  constructor() {
+    // Create template cells
+    const basicCell = new Cell("HUMAN_DNA");
+    const bloodCell = new BloodCell("HUMAN_DNA", 50);
+    const brainCell = new BrainCell("HUMAN_DNA", ["Memory 1"]);
+
+    // Store templates
+    this.templates.set("basic", basicCell);
+    this.templates.set("blood", bloodCell);
+    this.templates.set("brain", brainCell);
+  }
+
+  // Get copy using template's divide method
+  getCell(type: string): Cell | null {
+    const template = this.templates.get(type);
+    template.grow(); // Give energy
+    return template.divide(); // Use prototype's method
+  }
+}
+```
+
+**Key Point**: Factory stores prototype templates and uses their own `divide()` methods to create copies.
+
+### lab.ts - Simple User Interface
+
+```typescript
+export class Lab {
+  private cells: Cell[] = [];
+  private factory = new CellFactory();
+
+  // Main menu loop
+  start(): void {
+    while (true) {
+      this.showMenu();
+      const choice = readline.question("Choose (1-5): ");
+
+      if (choice === "1") this.createCell();
+      else if (choice === "2") this.divideCell();
+      // ... more options
+    }
+  }
+
+  private createCell(): void {
+    // Get cell from factory (which uses prototype's divide method)
+    const cell = this.factory.getCell(selectedType);
+    this.cells.push(cell);
+  }
+}
+```
+
+**Key Point**: Lab uses factory to create cells, but doesn't know how cells copy themselves.
+
+## The Prototype Pattern Explained
+
+### What it is
+
+- Objects can create copies of themselves
+- No external code needs to know how to build the object
+- Each object handles its own copying logic
+
+### Why it works
+
+1. **Self-contained**: Each cell knows how to copy itself
+2. **Flexible**: Different cell types copy different properties
+3. **Simple to use**: Just call `cell.divide()`
+4. **No coupling**: Lab doesn't need to know cell internals
+
+### Real-world comparison
+
+Just like biological cells:
+
+- Cell divides itself (doesn't need external help)
+- New cell has same DNA (properties get copied)
+- Different cell types divide differently
+- Each cell handles its own division process
+
+## What you can do
+
+1. **Create cells** - Choose from basic, blood, or brain templates
+2. **Divide cells** - Watch cells clone themselves
+3. **Teach brain cells** - Add memories that get copied when dividing
+4. **See the pattern** - Each cell type handles copying differently
+
+## Example Flow
 
 ```
-🌱 CELL DIVISION
-================
-Cells in lab:
-1. [Blood] Cell def456: DNA=HUMAN_DNA, Energy=100, Age=2
+1. User creates brain cell from template
+   → Factory uses brain template's divide() method
+   → New brain cell created with copied memories
 
-Choose cell to divide (1-1): 1
+2. User teaches brain cell something new
+   → Brain cell adds to its memories array
 
-🔍 Selected: Cell def456: DNA=HUMAN_DNA, Energy=100, Age=2
-
-Cell def456 divided! Created new cell ghi789
-Blood cell divided! Oxygen level: 50
-
-🎉 Division successful!
-👶 New cell: Cell ghi789: DNA=HUMAN_DNA, Energy=80, Age=0
-👴 Parent cell: Cell def456: DNA=HUMAN_DNA, Energy=70, Age=3
+3. User divides brain cell
+   → Brain cell's divide() method copies all memories
+   → New brain cell has same memories as parent
 ```
 
-## Requirements
-
-- Node.js (v14 or higher)
-- TypeScript
-- readline-sync for interactive console
+This demonstrates the Prototype Pattern: objects copying themselves without external code knowing their internals.
 
 ## Built By
 

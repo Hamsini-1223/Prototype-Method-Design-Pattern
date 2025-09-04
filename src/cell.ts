@@ -1,11 +1,7 @@
-// Cell.ts
-// Basic cell that can divide itself (like mitosis in biology)
+// cell.ts
+// Basic cell that can divide itself
 
-export interface Cloneable {
-  divide(): Cell;
-}
-
-export class Cell implements Cloneable {
+export class Cell {
   public dna: string;
   public energy: number;
   public age: number;
@@ -18,26 +14,23 @@ export class Cell implements Cloneable {
     this.id = Math.random().toString(36).substring(2, 8);
   }
 
-  // This is the core of Prototype pattern - the cell knows how to copy itself
+  // Core of Prototype pattern - cell copies itself
   divide(): Cell {
     if (this.energy < 50) {
       throw new Error("Not enough energy to divide!");
     }
 
-    // Parent cell loses energy when dividing
-    this.energy = this.energy - 30;
-    this.age = this.age + 1;
+    this.energy -= 30;
+    this.age += 1;
 
-    // Create new cell with same DNA but fresh energy
     const newCell = new Cell(this.dna, 80, 0);
-
-    console.log(`Cell ${this.id} divided! Created new cell ${newCell.getId()}`);
+    console.log(`Cell divided! Parent: ${this.id}, Child: ${newCell.id}`);
     return newCell;
   }
 
   grow(): void {
     this.energy = Math.min(100, this.energy + 20);
-    this.age = this.age + 1;
+    this.age += 1;
   }
 
   getId(): string {
